@@ -43,12 +43,13 @@ class MyTxt extends StatelessWidget {
   final double letterSpacing;
   final FontWeight fontWeight;
 
-  MyTxt(
-      {this.txt,
-      this.color = Colors.black,
-      this.size = 14.0,
-      this.fontWeight = FontWeight.normal,
-      this.letterSpacing = 0.0,});
+  MyTxt({
+    this.txt,
+    this.color = Colors.black,
+    this.size = 14.0,
+    this.fontWeight = FontWeight.normal,
+    this.letterSpacing = 0.0,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -79,4 +80,15 @@ class TypewriterText extends StatelessWidget {
           return Text(text.substring(0, textLength), style: textStyle);
         });
   }
+}
+
+String getMomentDay() {
+  int hour = ScreenSize.dateTimeNow.hour;
+  return (hour > 21 || hour <= 5)
+      ? "Good Night"
+      : (hour > 5 && hour <= 13)
+          ? "Good Morning"
+          : (hour > 13 && hour <= 17)
+              ? "Good Afternoon"
+              : (hour > 17 && hour <= 21) ? "Good Evening" : "";
 }

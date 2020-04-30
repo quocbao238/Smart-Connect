@@ -17,5 +17,6 @@ class ImageApp {
   static String homeEvening = 'assets/backgroundhomenight.jpg';
   static String homeNight = 'assets/backgroundhome.jpg';
   static String livingRoom = 'assets/livingroom.jpg';
-  static String iconPower = 'assets.iconPower.png';
+  static String iconPower = 'assets/iconPower.png';
+  static String devicesBackground = 'assets/backgrounddevice.jpg';
 }
