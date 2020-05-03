@@ -1,15 +1,16 @@
 import 'package:bsmart_connect/models/realtimefirebase.dart';
 import 'package:bsmart_connect/models/uimodel.dart';
 import 'package:bsmart_connect/ui/widget/customUI.dart';
+import 'package:bsmart_connect/ui/widget/iconcustome.dart';
 import 'package:bsmart_connect/ui/widget/styleSizebox.dart';
 import 'package:bsmart_connect/ui/widget/styleText.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:xlive_switch/xlive_switch.dart';
 
 class RoomData extends StatefulWidget {
   final String name;
-  RoomData({this.name});
+  final String imageUrl;
+  RoomData({this.name, this.imageUrl});
   @override
   _RoomDataState createState() => _RoomDataState();
 }
@@ -43,11 +44,23 @@ class _RoomDataState extends State<RoomData> {
                   !snapshot.hasError &&
                   snapshot.data.snapshot.value != null) {
                 Map data = snapshot.data.snapshot.value;
+
+                List<List> itemList = new List();
                 List item = new List();
-                item.add(data['Device1']);
-                item.add(data['Device2']);
-                item.add(data['Device3']);
-                item.add(data['Device4']);
+                for (int i = 1; i < 5; i++) {
+                  for (int k = 0; k < 1; k++) {
+                    item.add(data['Device$i']['value']);
+                    item.add(data['Device$i']['isFavorite']);
+                    item.add(data['Device$i']['time1']);
+                    item.add(data['Device$i']['time2']);
+                    item.add(data['Device$i']['time3']);
+                    item.add(data['Device$i']['time4']);
+                    item.add(data['Device$i']['count']);
+                  }
+                  itemList.add(item);
+                  item = [];
+                }
+
                 return Container(
                     height: ScreenSize.height * 0.65,
                     margin: EdgeInsets.symmetric(
@@ -57,11 +70,11 @@ class _RoomDataState extends State<RoomData> {
                         buildRoomButton(),
                         BoxMargin(isVertical: true, multi: 4.0),
                         buildTempAndHumi(data),
-                        buildDevices(data,item)
+                        buildDevices(data, itemList)
                       ],
                     ));
               } else
-                return Text("No data");
+                return LoadingWidget();
             }),
       ),
     );
@@ -96,10 +109,10 @@ class _RoomDataState extends State<RoomData> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(
-            isTemp ? Icons.ac_unit : Icons.cloud_download,
-            color: Color.fromRGBO(0, 233, 193, 1),
-          ),
+          IconCustom(
+              color: Color.fromRGBO(0, 233, 193, 1),
+              size: 30.0 * ScreenSize.szText,
+              urlIcon: isTemp ? ImageApp.temperIcon : ImageApp.humididtyIcon),
           BoxMargin(
             isVertical: false,
           ),
@@ -112,7 +125,7 @@ class _RoomDataState extends State<RoomData> {
     );
   }
 
-  Widget buildDevices(Map<dynamic, dynamic> data, List item) {
+  Widget buildDevices(Map<dynamic, dynamic> data, List<List> item) {
     return Container(
       height: ScreenSize.height * 0.35,
       child: GridView.count(
@@ -125,9 +138,7 @@ class _RoomDataState extends State<RoomData> {
         childAspectRatio: 1.6,
         children: List.generate(item.length, (index) {
           return GestureDetector(
-            onTap: () {
-              // Toast.show("Device $index", homeGlobalKey.currentContext);
-            },
+            onTap: () {},
             child: Container(
               height: ScreenSize.height * 0.05,
               padding: EdgeInsets.only(
@@ -142,12 +153,10 @@ class _RoomDataState extends State<RoomData> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Icon(
-                        Icons.ac_unit,
-                        size: 30.0 * ScreenSize.szText,
-                        color: Color.fromRGBO(0, 233, 193, 1),
-                        // color: Color.fromRGBO(72, 143, 207, 1),
-                      ),
+                      IconCustom(
+                          color: Color.fromRGBO(0, 233, 193, 1),
+                          size: 30.0 * ScreenSize.szText,
+                          urlIcon: convertIndexIcon(index)),
                       BoxMargin(isVertical: false),
                       Text(
                         "${convertIntdeviceName(index)}",
@@ -159,29 +168,78 @@ class _RoomDataState extends State<RoomData> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                        width: ScreenSize.width * 0.08,
-                        height: ScreenSize.width * 0.08,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromRGBO(16, 50, 93, 1)),
-                        child: Center(
-                          child: Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                            size: 14 * ScreenSize.szText,
+                      GestureDetector(
+                        onTap: () {
+                          if (this.mounted) {
+                            setState(() {
+                              setFavorite(
+                                  databaseReference: RealTimeDB.devices,
+                                  key: index == 0
+                                      ? "Device1"
+                                      : index == 1
+                                          ? "Device2"
+                                          : index == 2
+                                              ? "Device3"
+                                              : index == 3
+                                                  ? "Device4"
+                                                  : "Device",
+                                  data: item[index][1] == 0 ? 1 : 0);
+                            });
+                          }
+                        },
+                        child: Container(
+                          width: ScreenSize.width * 0.08,
+                          height: ScreenSize.width * 0.08,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromRGBO(16, 50, 93, 1)),
+                          child: Center(
+                            child: Icon(
+                              item[index][1] == 0
+                                  ? Icons.favorite_border
+                                  : Icons.favorite,
+                              color: item[index][1] == 0
+                                  ? Colors.grey
+                                  : Colors.red,
+                              size: 14 * ScreenSize.szText,
+                            ),
                           ),
                         ),
                       ),
                       Spacer(),
                       XlivSwitch(
-                        value: item[index] == 0 ? false : true,
+                        value: item[index][0] == 0 ? false : true,
                         onChanged: (value) {
-                          setState(() {
-                            setDBData(databaseReference:RealTimeDB.devices,
-                            key: index == 0 ? "Device1" : index == 1 ? "Device2" : index == 2 ? "Device3" : index == 3 ? "Device4" : "Device",
-                            data: item[index] == 0 ? 1 : 0);
-                          });
+                          if (this.mounted) {
+                            setState(() {
+                              setDBData(
+                                  databaseReference: RealTimeDB.devices,
+                                  key: index == 0
+                                      ? "Device1"
+                                      : index == 1
+                                          ? "Device2"
+                                          : index == 2
+                                              ? "Device3"
+                                              : index == 3
+                                                  ? "Device4"
+                                                  : "Device",
+                                  data: item[index][0] == 0 ? 1 : 0);
+
+                              setTime(
+                                  databaseReference: RealTimeDB.devices,
+                                  count: item[index][6].toInt(),
+                                  key: index == 0
+                                      ? "Device1"
+                                      : index == 1
+                                          ? "Device2"
+                                          : index == 2
+                                              ? "Device3"
+                                              : index == 3
+                                                  ? "Device4"
+                                                  : "Device",
+                                  data: (item[index][0] == 0) ? "ON" : "OFF");
+                            });
+                          }
                         },
                       ),
                     ],
@@ -204,7 +262,7 @@ class _RoomDataState extends State<RoomData> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TypewriterText(
-                text: "Living Room",
+                text: widget.name,
                 textStyle: TxtStyle.deviceNameWhite,
               ),
               BoxMargin(isVertical: true),
@@ -218,9 +276,12 @@ class _RoomDataState extends State<RoomData> {
           XlivSwitch(
             value: _value,
             onChanged: (value) {
-              setState(() {
-                _value = value;
-              });
+              if (this.mounted) {
+                setState(() {
+                  setAllDevice(_value);
+                  _value = value;
+                });
+              }
             },
           ),
         ],
@@ -236,20 +297,18 @@ class _RoomDataState extends State<RoomData> {
       child: Container(
         height: ScreenSize.height * 0.35,
         child: ShaderMask(
-          shaderCallback: (rect) {
-            return LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color.fromRGBO(6, 41, 74, 1), Colors.transparent],
-            ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
-          },
-          blendMode: BlendMode.dstIn,
-          child: Image.asset(
-            ImageApp.livingRoom,
-            // height: 400,
-            fit: BoxFit.fill,
-          ),
-        ),
+            shaderCallback: (rect) {
+              return LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color.fromRGBO(6, 41, 74, 1), Colors.transparent],
+              ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
+            },
+            blendMode: BlendMode.dstIn,
+            child: Image.network(
+              widget.imageUrl,
+              fit: BoxFit.fill,
+            )),
       ),
     );
   }

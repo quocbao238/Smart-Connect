@@ -2,6 +2,7 @@ import 'package:bsmart_connect/models/realtimefirebase.dart';
 import 'package:bsmart_connect/models/uimodel.dart';
 import 'package:bsmart_connect/ui/widget/animation.dart';
 import 'package:bsmart_connect/ui/widget/customUI.dart';
+import 'package:bsmart_connect/ui/widget/iconcustome.dart';
 import 'package:bsmart_connect/ui/widget/styleSizebox.dart';
 import 'package:bsmart_connect/ui/widget/styleText.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -73,8 +74,8 @@ class _DevicesState extends State<Devices> {
   Widget buildListView() {
     return Container(
       // color: Colors.red,
-      child: 
-      FirebaseAnimatedList(
+      child:
+       FirebaseAnimatedList(
           query: RealTimeDB.devices,
           sort: (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key),
           itemBuilder: (BuildContext context, DataSnapshot snapshot,
@@ -87,20 +88,19 @@ class _DevicesState extends State<Devices> {
             );
           }),
     );
-
-    // return ListView.builder(
-    //   itemCount: 4,
-    //   scrollDirection: Axis.vertical,
-    //   itemBuilder: (context, index) {
-    //     return buildDeviceInfo(index);
-    //   },
-    // );
   }
 
   Widget buildDeviceInfo(int index, DataSnapshot snapshot) {
+    print(snapshot.toString());
     return GestureDetector(
       onTap: () {
-        handelDevices(key: snapshot.key, data: (snapshot.value == 0) ? 1 : 0);
+        handelDevices(
+            key: snapshot.key, data: (snapshot.value['value'] == 0) ? 1 : 0);
+        setTime(
+            databaseReference: RealTimeDB.devices,
+            count: snapshot.value['count'].toInt(),
+            key: snapshot.key,
+            data: (snapshot.value['value'] == 0) ? "ON" : "OFF");
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -118,7 +118,7 @@ class _DevicesState extends State<Devices> {
             width: ScreenSize.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              color: (snapshot.value == 1)
+              color: (snapshot.value['value'] == 1)
                   ? Color.fromRGBO(39, 78, 145, 1)
                   : Color.fromRGBO(7, 57, 83, 1),
             ),
@@ -127,13 +127,12 @@ class _DevicesState extends State<Devices> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Icon(
-                      Icons.ac_unit,
-                      size: 40.0 * ScreenSize.szText,
-                      color: (snapshot.value == 1)
-                          ? Color.fromRGBO(0, 233, 193, 1)
-                          : Color.fromRGBO(72, 143, 207, 1),
-                    ),
+                    IconCustom(
+                        color: (snapshot.value['value'] == 1)
+                            ? Color.fromRGBO(0, 233, 193, 1)
+                            : Color.fromRGBO(72, 143, 207, 1),
+                        size: 40.0 * ScreenSize.szText,
+                        urlIcon: convertNameIcon(snapshot.key)),
                     BoxMargin(isVertical: false),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +154,7 @@ class _DevicesState extends State<Devices> {
                       height: ScreenSize.height * 0.08,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        color: (snapshot.value == 0)
+                        color: (snapshot.value['value'] == 0)
                             ? Color.fromRGBO(39, 78, 145, 1)
                             : Color.fromRGBO(7, 57, 83, 1),
                       ),
@@ -163,9 +162,9 @@ class _DevicesState extends State<Devices> {
                           horizontal: ScreenSize.marginHorizontal),
                       child: Center(
                         child: Text(
-                          (snapshot.value == 1) ? 
-                           "ON 4:10 PM"
-                          :"OFF 4:10 PM",
+                          (snapshot.value['value'] == 1)
+                              ? "ON 4:10 PM"
+                              : "OFF 4:10 PM",
                           style: TxtStyle.deviceContent,
                         ),
                       ),
@@ -173,9 +172,11 @@ class _DevicesState extends State<Devices> {
                     BoxMargin(isVertical: false, multi: 1.0),
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                         setBoolList(snapshot.key);
-                        });
+                        if (this.mounted) {
+                          setState(() {
+                            setBoolList(snapshot.key);
+                          });
+                        }
                       },
                       child: Container(
                         width: ScreenSize.width * 0.15,
@@ -193,52 +194,31 @@ class _DevicesState extends State<Devices> {
                   ],
                 ),
                 convertIndextoBoolList(snapshot.key)
-                    ? Column(
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(
-                                right: ScreenSize.marginHorizontal),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text("Time: $index:46 - 15/4/2020",
-                                    style: TxtStyle.deviceContent),
-                                Text("Status:  ON",
-                                    style: TxtStyle.deviceContent),
-                              ],
+                    ? Container(
+                        width: ScreenSize.width,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("History", style: TxtStyle.deviceNameWhite),
+                            BoxMargin(isVertical: true),
+                            Text("Time 1: ${snapshot.value['time1']}",
+                                style: TxtStyle.deviceContent),
+                            BoxMargin(isVertical: true),
+                            Text("Time 2: ${snapshot.value['time2']}",
+                                style: TxtStyle.deviceContent),
+                            BoxMargin(isVertical: true),
+                            Text("Time 3: ${snapshot.value['time3']}",
+                                style: TxtStyle.deviceContent),
+                            BoxMargin(isVertical: true),
+                            Text("Time 4: ${snapshot.value['time4']}",
+                                style: TxtStyle.deviceContent),
+                            BoxMargin(
+                              isVertical: true,
+                              multi: 2.0,
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                                right: ScreenSize.marginHorizontal),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text("Time: $index:46 - 15/4/2020",
-                                    style: TxtStyle.deviceContent),
-                                Text("Status:  ON",
-                                    style: TxtStyle.deviceContent),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                                right: ScreenSize.marginHorizontal),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text("Time: $index:46 - 15/4/2020",
-                                    style: TxtStyle.deviceContent),
-                                Text("Status:  ON",
-                                    style: TxtStyle.deviceContent),
-                              ],
-                            ),
-                          ),
-                          BoxMargin(
-                            isVertical: true,
-                            multi: 2.0,
-                          ),
-                        ],
+                          ],
+                        ),
                       )
                     : SizedBox(),
               ],
@@ -283,16 +263,26 @@ class _DevicesState extends State<Devices> {
   }
 
   void setBoolList(String name) {
-    // setState(() {
-      name == "Device1"
-          ? boolList[0] = !boolList[0]
-          : name == "Device2"
-              ? boolList[1] = !boolList[1]
-              : name == "Device3"
-                  ? boolList[2] = !boolList[2]
-                  : name == "Device4"
-                      ? boolList[3] = !boolList[3]
-                      : boolList[0] = boolList[0];
-    // });
+    name == "Device1"
+        ? boolList[0] = !boolList[0]
+        : name == "Device2"
+            ? boolList[1] = !boolList[1]
+            : name == "Device3"
+                ? boolList[2] = !boolList[2]
+                : name == "Device4"
+                    ? boolList[3] = !boolList[3]
+                    : boolList[0] = boolList[0];
+  }
+
+  void isFavorite(String name) {
+    name == "Device1"
+        ? boolList[0] = !boolList[0]
+        : name == "Device2"
+            ? boolList[1] = !boolList[1]
+            : name == "Device3"
+                ? boolList[2] = !boolList[2]
+                : name == "Device4"
+                    ? boolList[3] = !boolList[3]
+                    : boolList[0] = boolList[0];
   }
 }

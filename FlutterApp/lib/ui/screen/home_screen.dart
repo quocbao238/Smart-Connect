@@ -1,7 +1,11 @@
+import 'package:bsmart_connect/models/realtimefirebase.dart';
 import 'package:bsmart_connect/models/uimodel.dart';
 import 'package:bsmart_connect/ui/widget/customUI.dart';
+import 'package:bsmart_connect/ui/widget/iconcustome.dart';
 import 'package:bsmart_connect/ui/widget/styleSizebox.dart';
 import 'package:bsmart_connect/ui/widget/styleText.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
@@ -16,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   GlobalKey homeGlobalKey = new GlobalKey();
 
   Future<bool> _onWillPop() async {
-    Toast.show("On will Pop", homeGlobalKey.currentContext);
+    // Toast.show("On will Pop", homeGlobalKey.currentContext);
     return false;
   }
 
@@ -53,13 +57,13 @@ class _HomeScreenState extends State<HomeScreen> {
       right: ScreenSize.marginHorizontal * 0.5,
       child: SafeArea(
         child: PlayAnimation<double>(
-            duration: 1000.milliseconds,
+            duration: 500.milliseconds,
             delay: 2000.milliseconds,
             tween: (0.0).tweenTo(ScreenSize.height * 0.08),
             builder: (context, child, height) {
               return GestureDetector(
                 onTap: () {
-                  Toast.show("Power Energy", homeGlobalKey.currentContext);
+                  // Toast.show("Power Energy", homeGlobalKey.currentContext);
                   gotoPowerEnergy(homeGlobalKey.currentContext);
                 },
                 child: Container(
@@ -185,14 +189,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildFavoriteList() {
-    return PlayAnimation<double>(
-      duration: 2000.milliseconds,
-      delay: 200.milliseconds,
-      tween: (0.0).tweenTo(ScreenSize.width),
-      builder: (context, child, width) {
-        return buildContainerDevices(width);
-      },
-    );
+  //   return PlayAnimation<double>(
+  //     duration: 2000.milliseconds,
+  //     delay: 200.milliseconds,
+  //     tween: (0.0).tweenTo(ScreenSize.width),
+  //     builder: (context, child, width) {
+        return buildContainerDevices(ScreenSize.width);
+    //   },
+    // );
   }
 
   Widget buildRooms() {
@@ -216,14 +220,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildListRoom() {
-    return PlayAnimation<double>(
-      duration: 2000.milliseconds,
-      delay: 200.milliseconds,
-      tween: (0.0).tweenTo(ScreenSize.width),
-      builder: (context, child, width) {
-        return buildContainerRoom(width);
-      },
-    );
+    // return PlayAnimation<double>(
+      // duration: 200.milliseconds,
+      // delay: 200.milliseconds,
+      // tween: (0.0).tweenTo(ScreenSize.width),
+      // builder: (context, child, width) {
+        return buildContainerRoom(ScreenSize.width);
+    //   },
+    // );
   }
 
   Widget buildContainerRoom(double width) {
@@ -232,128 +236,194 @@ class _HomeScreenState extends State<HomeScreen> {
         margin: EdgeInsets.only(bottom: ScreenSize.marginVertical),
         height: ScreenSize.height * 0.2,
         width: width,
-        child: ListView.builder(
-            itemCount: 10,
+        child: 
+        FirebaseAnimatedList(
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  Toast.show("Room $index", homeGlobalKey.currentContext);
-                  gotoRoom(homeGlobalKey.currentContext, "Living Room");
-                },
-                child: Container(
-                  margin: EdgeInsets.only(right: ScreenSize.marginHorizontal),
-                  width: ScreenSize.width * 0.4,
-                  height: ScreenSize.height * 0.2,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: Colors.blue),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        height: ScreenSize.height * 0.14,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            image: DecorationImage(
-                                image: AssetImage(ImageApp.livingRoom),
-                                fit: BoxFit.cover)),
+            query: RealTimeDB.room,
+            sort: (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key),
+            itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                Animation<double> animation, int index) {
+              return SizeTransition(
+                  sizeFactor: animation,
+                  child: GestureDetector(
+                    onTap: () {
+                      // Toast.show("Room $index", homeGlobalKey.currentContext);
+                      gotoRoom(homeGlobalKey.currentContext, snapshot.key,
+                          snapshot.value);
+                    },
+                    child: Container(
+                      margin:
+                          EdgeInsets.only(right: ScreenSize.marginHorizontal),
+                      width: ScreenSize.width * 0.4,
+                      height: ScreenSize.height * 0.3,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.blue),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            height: ScreenSize.height * 0.14,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                image: DecorationImage(
+                                    image:
+                                        NetworkImage(snapshot.value.toString()),
+                                    fit: BoxFit.cover)),
+                          ),
+                          BoxMargin(isVertical: true),
+                          Container(
+                            margin: EdgeInsets.only(
+                                left: ScreenSize.marginHorizontal),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "${snapshot.key.toString()}",
+                                  style: TxtStyle.deviceNameWhite,
+                                ),
+                                BoxMargin(isVertical: true),
+                                Text(
+                                  "4 Devices",
+                                  style: TxtStyle.deviceContent,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                      BoxMargin(isVertical: true),
-                      Container(
-                        margin:
-                            EdgeInsets.only(left: ScreenSize.marginHorizontal),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Living Room",
-                              style: TxtStyle.deviceNameWhite,
-                            ),
-                            BoxMargin(isVertical: true),
-                            Text(
-                              "8 devices",
-                              style: TxtStyle.deviceContent,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              );
+                    ),
+                  ));
             }),
       ),
     );
   }
 
   Widget buildContainerDevices(double width) {
-    return GestureDetector(
-      onLongPress: () {
-        gotoDevices(homeGlobalKey.currentContext);
-      },
-      child: Container(
-        width: width,
-        height: ScreenSize.height * 0.22,
-        child: width > ScreenSize.width * 0.1
-            ? GridView.count(
-                scrollDirection: Axis.horizontal,
-                primary: false,
-                crossAxisCount: 2,
-                mainAxisSpacing: 8.0,
-                crossAxisSpacing: 8.0,
-                childAspectRatio: 0.4,
-                children: List.generate(4, (index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Toast.show("Device $index", homeGlobalKey.currentContext);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.only(
-                          top: 8.0, bottom: 8.0, right: 12.0, left: 8.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Color.fromRGBO(39, 78, 145, 1),
-                        // color: Color.fromRGBO(7, 57, 83, 1),
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.ac_unit,
-                            size: 30.0 * ScreenSize.szText,
-                            color: Color.fromRGBO(0, 233, 193, 1),
-                            // color: Color.fromRGBO(72, 143, 207, 1),
-                          ),
-                          BoxMargin(isVertical: false),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Light",
-                                style: TxtStyle.deviceNameWhite,
+    return StreamBuilder(
+        stream: RealTimeDB.devices.onValue,
+        builder: (context, snapshot) {
+          if (snapshot.hasData &&
+              !snapshot.hasError &&
+              snapshot.data.snapshot.value != null) {
+            Map data = snapshot.data.snapshot.value;
+
+            return GestureDetector(
+              onLongPress: () {
+                gotoDevices(homeGlobalKey.currentContext);
+              },
+              child: Container(
+                width: width,
+                height: ScreenSize.height * 0.22,
+                child: width > ScreenSize.width * 0.1
+                    ? GridView.count(
+                        scrollDirection: Axis.horizontal,
+                        primary: false,
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 8.0,
+                        crossAxisSpacing: 8.0,
+                        childAspectRatio: 0.4,
+                        children: List.generate(4, (index) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                setDBData(
+                                    databaseReference: RealTimeDB.devices,
+                                    key: index == 0
+                                        ? "Device1"
+                                        : index == 1
+                                            ? "Device2"
+                                            : index == 2
+                                                ? "Device3"
+                                                : index == 3
+                                                    ? "Device4"
+                                                    : "Device",
+                                    data: data['${converIndextoDevice(index)}']
+                                                ['value'] ==
+                                            0
+                                        ? 1
+                                        : 0);
+
+                                setTime(
+                                    databaseReference: RealTimeDB.devices,
+                                    count: data['${converIndextoDevice(index)}']
+                                            ['count']
+                                        .toInt(),
+                                    key: index == 0
+                                        ? "Device1"
+                                        : index == 1
+                                            ? "Device2"
+                                            : index == 2
+                                                ? "Device3"
+                                                : index == 3
+                                                    ? "Device4"
+                                                    : "Device",
+                                    data: data['${converIndextoDevice(index)}']
+                                                ['value'] ==
+                                            0
+                                        ? "ON"
+                                        : "OFF");
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  top: 8.0,
+                                  bottom: 8.0,
+                                  right: 12.0,
+                                  left: 8.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: (data['${converIndextoDevice(index)}']
+                                            ['value'] ==
+                                        1)
+                                    ? Color.fromRGBO(39, 78, 145, 1)
+                                    : Color.fromRGBO(7, 57, 83, 1),
                               ),
-                              BoxMargin(isVertical: true),
-                              Text(
-                                "Kitchen",
-                                style: TxtStyle.deviceContent,
+                              child: Row(
+                                children: <Widget>[
+                                  IconCustom(
+                                      color:
+                                          (data['${converIndextoDevice(index)}']
+                                                      ['value'] ==
+                                                  1)
+                                              ? Color.fromRGBO(0, 233, 193, 1)
+                                              : Color.fromRGBO(72, 143, 207, 1),
+                                      size: 30.0 * ScreenSize.szText,
+                                      urlIcon: convertIndexIcon(index)),
+                                  BoxMargin(isVertical: false),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        convertIntdeviceName(index),
+                                        style: TxtStyle.deviceNameWhite,
+                                      ),
+                                      BoxMargin(isVertical: true),
+                                      Text(
+                                        "LivingRoom",
+                                        style: TxtStyle.deviceContent,
+                                      ),
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  Container(
+                                    width: 4,
+                                    color: Color.fromRGBO(15, 175, 176, 1),
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
-                          Spacer(),
-                          Container(
-                            width: 4,
-                            color: Color.fromRGBO(15, 175, 176, 1),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-              )
-            : Container(),
-      ),
-    );
+                            ),
+                          );
+                        }),
+                      )
+                    : Container(),
+              ),
+            );
+          } else
+            return LoadingWidget();
+        });
   }
 
   bool isEnoughForbuildNameTime(double height) =>

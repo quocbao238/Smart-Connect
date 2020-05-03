@@ -30,7 +30,8 @@ dependencies:
   xlive_switch: ^1.0.5
   firebase_database: ^3.1.5
   firebase_core: ^0.4.4+3
-
+  intl: ^0.16.1
+  loading_animations: ^2.1.0
 
 dev_dependencies:
   flutter_test:

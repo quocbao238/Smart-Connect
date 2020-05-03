@@ -1,7 +1,11 @@
+import 'package:bsmart_connect/models/realtimefirebase.dart';
 import 'package:bsmart_connect/models/uimodel.dart';
 import 'package:bsmart_connect/ui/widget/colorstyle.dart';
+import 'package:bsmart_connect/ui/widget/customUI.dart';
 import 'package:bsmart_connect/ui/widget/styleSizebox.dart';
 import 'package:bsmart_connect/ui/widget/styleText.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
@@ -38,31 +42,39 @@ class _PowerEnergyState extends State<PowerEnergy> {
         children: <Widget>[
           buidAppBar(),
           BoxMargin(isVertical: true, multi: 2.0),
-          Expanded(
-              child:
-                  Container(child: SingleChildScrollView(child: buildPage()))),
+          Expanded(child: Container(child: buildPage())),
         ],
       ),
     );
   }
 
   Widget buildPage() {
-    return Column(
-      children: <Widget>[
-        buildChart(),
-        BoxMargin(isVertical: true, multi: 5.0),
-        buildInstantaneous(),
-        BoxMargin(isVertical: true, multi: 2.0),
-        buildInstanParam(),
-        BoxMargin(isVertical: true, multi: 5.0),
-        buildLastMonth(),
-        BoxMargin(isVertical: true, multi: 2.0),
-        buildInstanParam(),
-      ],
-    );
+    return StreamBuilder(
+        stream: RealTimeDB.power.onValue,
+        builder: (context, snapshot) {
+          if (snapshot.hasData &&
+              !snapshot.hasError &&
+              snapshot.data.snapshot.value != null) {
+            Map data = snapshot.data.snapshot.value;
+            return Column(
+              children: <Widget>[
+                buildChart(convertListChart(data)),
+                BoxMargin(isVertical: true, multi: 3.0),
+                buildInstantaneous(),
+                BoxMargin(isVertical: true, multi: 2.0),
+                buildInstanParam(),
+                BoxMargin(isVertical: true, multi: 5.0),
+                // buildLastMonth(),
+                // BoxMargin(isVertical: true, multi: 2.0),
+                // buildInstanParam(),
+              ],
+            );
+          } else
+            return LoadingWidget();
+        });
   }
 
-  Widget buildChart() {
+  Widget buildChart(List<double> convertListChart) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: ScreenSize.marginHorizontal),
       height: ScreenSize.height * 0.4,
@@ -73,14 +85,14 @@ class _PowerEnergyState extends State<PowerEnergy> {
         color: Color.fromRGBO(5, 86, 128, 1),
       ),
       child: LineChart(
-        powerData(),
+        powerData(convertListChart),
       ),
     );
     //   },
     // );
   }
 
-  LineChartData powerData() {
+  LineChartData powerData(List<double> convertListChart) {
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -160,18 +172,18 @@ class _PowerEnergyState extends State<PowerEnergy> {
       lineBarsData: [
         LineChartBarData(
           spots: [
-            FlSpot(0, 450),
-            FlSpot(1, 600),
-            FlSpot(2, 1250),
-            FlSpot(3, 840),
-            FlSpot(4, 1600),
-            FlSpot(5, 600),
-            FlSpot(6, 2000),
-            FlSpot(7, 520),
-            FlSpot(8, 950),
-            FlSpot(9, 200),
+            FlSpot(0, convertListChart[0]),
+            FlSpot(1, convertListChart[1]),
+            FlSpot(2, convertListChart[2]),
+            FlSpot(3, convertListChart[3]),
+            FlSpot(4, convertListChart[4]),
+            FlSpot(5, convertListChart[5]),
+            FlSpot(6, convertListChart[6]),
+            FlSpot(7, convertListChart[7]),
+            FlSpot(8, convertListChart[8]),
+            FlSpot(9, convertListChart[9]),
+            FlSpot(10, convertListChart[9]),
           ],
-
           isCurved: true,
           colors: gradientColors,
           barWidth: 5,
@@ -274,63 +286,70 @@ class _PowerEnergyState extends State<PowerEnergy> {
           bottom: ScreenSize.marginVertical, left: ScreenSize.marginHorizontal),
       height: ScreenSize.height * 0.3,
       width: ScreenSize.width,
-      child: ListView.builder(
-          itemCount: 10,
+      child: FirebaseAnimatedList(
           scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                // Toast.show("Room $index", homeGlobalKey.currentContext);
-                // gotoDevices(homeGlobalKey.currentContext, "Living Room");
-              },
-              child: Container(
-                margin: EdgeInsets.only(right: ScreenSize.marginHorizontal * 2),
-                width: ScreenSize.width * 0.4,
-                height: ScreenSize.height * 0.3,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Color.fromRGBO(14, 71, 100, 1)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: ScreenSize.marginHorizontal * 2,
-                        left: ScreenSize.marginHorizontal * 1.5,
-                      ),
-                      // color: Colors.blue,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text("223.5 V", style: TxtStyle.deviceNameWhite),
-                          Text("Voltage", style: TxtStyle.deviceContent),
-                        ],
-                      ),
-                    ),
-                    buildImageParam(),
-                    Container(
-                      height: ScreenSize.height * 0.04,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(16),
-                              bottomRight: Radius.circular(16)),
-                          color: Color.fromRGBO(5, 86, 128, 1)),
-                      child: Center(
-                          child: Text(
-                        "Max: 226.3 V",
-                        style: TxtStyle.normalContentWhite,
-                      )),
-                    ),
-                  ],
-                ),
-              ),
-            );
+          query: RealTimeDB.power,
+          sort: (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key),
+          itemBuilder: (BuildContext context, DataSnapshot snapshot,
+              Animation<double> animation, int index) {
+            return buildParamContent(animation, snapshot);
           }),
     );
   }
 
-  Expanded buildImageParam() {
+  SizeTransition buildParamContent(
+      Animation<double> animation, DataSnapshot snapshot) {
+    return SizeTransition(
+        sizeFactor: animation,
+        child: Container(
+          margin: EdgeInsets.only(right: ScreenSize.marginHorizontal * 2),
+          width: ScreenSize.width * 0.4,
+          height: ScreenSize.height * 0.3,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Color.fromRGBO(14, 71, 100, 1)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(
+                  top: ScreenSize.marginHorizontal * 2,
+                  left: ScreenSize.marginHorizontal * 1.5,
+                ),
+                // color: Colors.blue,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                        snapshot.value['value'].toString() +
+                            " ${convertUnitParam(snapshot.key)}",
+                        style: TxtStyle.deviceNameWhite),
+                    BoxMargin(isVertical: false),
+                    Text(snapshot.key, style: TxtStyle.deviceContent),
+                  ],
+                ),
+              ),
+              buildImageParam(),
+              Container(
+                height: ScreenSize.height * 0.04,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(16)),
+                    color: Color.fromRGBO(5, 86, 128, 1)),
+                child: Center(
+                    child: Text(
+                  "Max: ${snapshot.value['max']}  ${convertUnitParam(snapshot.key)}",
+                  style: TxtStyle.normalContentWhite,
+                )),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  Widget buildImageParam() {
     return Expanded(
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: ScreenSize.marginHorizontal),
@@ -352,7 +371,7 @@ class _PowerEnergyState extends State<PowerEnergy> {
     );
   }
 
-  Container buildBar(double param) {
+  Widget buildBar(double param) {
     return Container(
       width: 6,
       height: ScreenSize.height * 0.15 * param,
@@ -364,5 +383,13 @@ class _PowerEnergyState extends State<PowerEnergy> {
         borderRadius: BorderRadius.circular(16.0),
       ),
     );
+  }
+
+  List<double> convertListChart(Map<dynamic, dynamic> data) {
+    List<double> chartData = List();
+    for (int i = 1; i <= 10; i++) {
+      chartData.add(data['Power']['value$i']['value'].toDouble());
+    }
+    return chartData;
   }
 }

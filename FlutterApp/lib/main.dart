@@ -1,8 +1,6 @@
-import 'package:bsmart_connect/ui/screen/demo.dart';
-import 'package:bsmart_connect/ui/screen/favorite_devices.dart';
+
 import 'package:bsmart_connect/ui/screen/home_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:bsmart_connect/ui/screen/intro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -29,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: InTroPage(),
     );
   }
 }
