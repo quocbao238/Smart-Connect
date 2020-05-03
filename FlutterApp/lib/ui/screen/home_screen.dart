@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Toast.show("On will Pop", homeGlobalKey.currentContext);
     return false;
   }
+
   @override
   void initState() {
     super.initState();
@@ -39,14 +40,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             buildImageBackground(),
             buildPage(),
-            buildPowerEnegry()
+            buildPowerEnergy()
           ],
         ),
       ),
     );
   }
 
-  Widget buildPowerEnegry() {
+  Widget buildPowerEnergy() {
     return Positioned(
       top: ScreenSize.marginVertical * 4,
       right: ScreenSize.marginHorizontal * 0.5,
@@ -58,9 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context, child, height) {
               return GestureDetector(
                 onTap: () {
-
-                  Toast.show("Power Enegry", homeGlobalKey.currentContext);
-
+                  Toast.show("Power Energy", homeGlobalKey.currentContext);
+                  gotoPowerEnergy(homeGlobalKey.currentContext);
                 },
                 child: Container(
                   height: height,
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Padding(
                         padding: EdgeInsets.only(right: 16),
                         child: Text(
-                          "Power Enegry",
+                          "Power Energy",
                           style: TxtStyle.normalContentWhite,
                         ),
                       )
@@ -239,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return GestureDetector(
                 onTap: () {
                   Toast.show("Room $index", homeGlobalKey.currentContext);
-                  gotoDevices(homeGlobalKey.currentContext, "Living Room");
+                  gotoRoom(homeGlobalKey.currentContext, "Living Room");
                 },
                 child: Container(
                   margin: EdgeInsets.only(right: ScreenSize.marginHorizontal),
@@ -288,66 +288,71 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildContainerDevices(double width) {
-    return Container(
-      width: width,
-      height: ScreenSize.height * 0.22,
-      child: width > ScreenSize.width * 0.1
-          ? GridView.count(
-              scrollDirection: Axis.horizontal,
-              primary: false,
-              crossAxisCount: 2,
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
-              childAspectRatio: 0.4,
-              children: List.generate(10, (index) {
-                return GestureDetector(
-                  onTap: () {
-                    Toast.show("Device $index", homeGlobalKey.currentContext);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        top: 8.0, bottom: 8.0, right: 12.0, left: 8.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: Color.fromRGBO(39, 78, 145, 1),
-                      // color: Color.fromRGBO(7, 57, 83, 1),
+    return GestureDetector(
+      onLongPress: () {
+        gotoDevices(homeGlobalKey.currentContext);
+      },
+      child: Container(
+        width: width,
+        height: ScreenSize.height * 0.22,
+        child: width > ScreenSize.width * 0.1
+            ? GridView.count(
+                scrollDirection: Axis.horizontal,
+                primary: false,
+                crossAxisCount: 2,
+                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 8.0,
+                childAspectRatio: 0.4,
+                children: List.generate(4, (index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Toast.show("Device $index", homeGlobalKey.currentContext);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          top: 8.0, bottom: 8.0, right: 12.0, left: 8.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Color.fromRGBO(39, 78, 145, 1),
+                        // color: Color.fromRGBO(7, 57, 83, 1),
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.ac_unit,
+                            size: 30.0 * ScreenSize.szText,
+                            color: Color.fromRGBO(0, 233, 193, 1),
+                            // color: Color.fromRGBO(72, 143, 207, 1),
+                          ),
+                          BoxMargin(isVertical: false),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Light",
+                                style: TxtStyle.deviceNameWhite,
+                              ),
+                              BoxMargin(isVertical: true),
+                              Text(
+                                "Kitchen",
+                                style: TxtStyle.deviceContent,
+                              ),
+                            ],
+                          ),
+                          Spacer(),
+                          Container(
+                            width: 4,
+                            color: Color.fromRGBO(15, 175, 176, 1),
+                          )
+                        ],
+                      ),
                     ),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.ac_unit,
-                          size: 30.0 * ScreenSize.szText,
-                          color: Color.fromRGBO(0, 233, 193, 1),
-                          // color: Color.fromRGBO(72, 143, 207, 1),
-                        ),
-                        BoxMargin(isVertical: false),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Light",
-                              style: TxtStyle.deviceNameWhite,
-                            ),
-                            BoxMargin(isVertical: true),
-                            Text(
-                              "Kitchen",
-                              style: TxtStyle.deviceContent,
-                            ),
-                          ],
-                        ),
-                        Spacer(),
-                        Container(
-                          width: 4,
-                          color: Color.fromRGBO(15, 175, 176, 1),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              }),
-            )
-          : Container(),
+                  );
+                }),
+              )
+            : Container(),
+      ),
     );
   }
 

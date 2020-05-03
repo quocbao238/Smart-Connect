@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -26,6 +26,10 @@ dependencies:
   simple_animations: ^2.1.1
   supercharged: ^1.5.1
   toast: ^0.1.5
+  fl_chart: ^0.9.3
+  xlive_switch: ^1.0.5
+  firebase_database: ^3.1.5
+  firebase_core: ^0.4.4+3
 
 
 dev_dependencies:

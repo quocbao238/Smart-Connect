@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "275003158765",
+    "firebase_url": "https://smart-connect-b2f56.firebaseio.com",
+    "project_id": "smart-connect-b2f56",
+    "storage_bucket": "smart-connect-b2f56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275003158765:android:15843a90648a63194c1ce4",
+        "android_client_info": {
+          "package_name": "com.example.bsmart_connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275003158765-85c2hpb7fce0vatllgg4lao8rphf2m22.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLUa8CB05PTYtd0u7dn89jE2mRl6XqmIE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "275003158765-85c2hpb7fce0vatllgg4lao8rphf2m22.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

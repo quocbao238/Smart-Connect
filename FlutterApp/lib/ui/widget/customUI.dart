@@ -1,6 +1,8 @@
 import 'package:bsmart_connect/models/uimodel.dart';
+import 'package:bsmart_connect/ui/screen/favorite_devices.dart';
 import 'package:bsmart_connect/ui/screen/home_screen.dart';
-import 'package:bsmart_connect/ui/screen/room_device.dart';
+import 'package:bsmart_connect/ui/screen/power_screen.dart';
+import 'package:bsmart_connect/ui/screen/room_screen.dart';
 import 'package:flutter/material.dart';
 
 void getScreenSize(BuildContext context) {
@@ -17,9 +19,41 @@ goToHome(BuildContext context) async {
       context, MaterialPageRoute(builder: (context) => HomeScreen()));
 }
 
-gotoDevices(BuildContext context, var object) async {
+gotoDevices(BuildContext context) async {
   await Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Devices(name: object)),
-  );
+      context, MaterialPageRoute(builder: (context) => Devices()));
+}
+
+gotoRoom(BuildContext context, var object) async {
+  await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => RoomData(
+                name: object,
+              )));
+}
+
+gotoPowerEnergy(BuildContext context) async {
+  await Navigator.push(
+      context, MaterialPageRoute(builder: (context) => PowerEnergy()));
+}
+
+String deviceName(String name) {
+  return name == "Device1"
+      ? "Celing Light"
+      : name == "Device2"
+          ? "Air Condition"
+          : name == "Device3"
+              ? "Ceiling Fans"
+              : name == "Device4" ? "RGB Light" : "";
+}
+
+String convertIntdeviceName(int index) {
+  return index == 0
+      ? "Celing Light"
+      : index == 1
+          ? "Air Condition"
+          : index == 2
+              ? "Ceiling Fans"
+              : index == 3 ? "RGB Light" : 0;
 }
