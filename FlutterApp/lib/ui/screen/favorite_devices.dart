@@ -162,9 +162,7 @@ class _DevicesState extends State<Devices> {
                           horizontal: ScreenSize.marginHorizontal),
                       child: Center(
                         child: Text(
-                          (snapshot.value['value'] == 1)
-                              ? "ON 4:10 PM"
-                              : "OFF 4:10 PM",
+                          snapshot.value['lasttime'].toString().substring(7,16),
                           style: TxtStyle.deviceContent,
                         ),
                       ),

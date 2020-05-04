@@ -78,5 +78,9 @@ Future<void> setTime(
   if (count > 4) {
     count = 1;
   }
+  await databaseReference.child(key).child('lasttime').set("Status $data " +
+      spcaer +
+      DateFormat('HH:mm dd-MM-yyyy').format(DateTime.now()).toString());
   await databaseReference.child(key).child("count").set(count);
+  
 }
