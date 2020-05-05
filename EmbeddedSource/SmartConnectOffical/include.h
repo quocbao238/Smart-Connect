@@ -17,15 +17,14 @@ int statusTemp =0 ,statusHumi = 0; /// status = 1 when on , status = 0 when off;
 #include <ESP8266WiFi.h>
 #include "FirebaseArduino.h"
 #include "DHT.h"
-#define DHTPIN 2 
 #define DHTPIN2 0
 #define DHTTYPE DHT22 
 
 #define PATH "/Devices"
-#define FIREBASE_HOST "smart-connect-b2f56.firebaseio.com" //Thay bằng địa chỉ firebase của bạn
-#define FIREBASE_AUTH ""   //Không dùng xác thực nên không đổi
-#define WIFI_SSID "LTD-1234"   //Thay wifi và mật khẩu
-#define WIFI_PASSWORD "duahaudo"
+#define FIREBASE_HOST "smart-connect-b2f56.firebaseio.com" // Firebase address
+#define FIREBASE_AUTH ""   
+#define WIFI_SSID "WiFi"   //    Edit your wifi
+#define WIFI_PASSWORD "Password" // Edit your password
 OneButton button1(Btn1, true);
 OneButton button2(Btn2, true);
 OneButton button3(Btn3, true);

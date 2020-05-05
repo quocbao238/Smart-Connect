@@ -32,11 +32,18 @@ dependencies:
   firebase_core: ^0.4.4+3
   intl: ^0.16.1
   loading_animations: ^2.1.0
+  flutter_launcher_icons: "^0.7.3"
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  # android: "icon"
+  android: true
+  ios: true
+  image_path: "assets/iconapp.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
