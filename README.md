@@ -49,7 +49,7 @@
 
 - Power Screen
  
-<img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot10.png" width="400"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot11.png" width="400"/> <img 
+<img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot10.png" width="400"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot11.png" width="400"/>
 
 
 #### Prequisites
