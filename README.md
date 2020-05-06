@@ -25,6 +25,13 @@
 
 <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/power_pcblayout1.png" width="1000"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/power_pcblayout2.png" width="1000"/>
 
+## Embedded
+- Source code in EmbeddedSource
+- I use ESP8266-V12 and ESP8266 V1 with Pzem004T
+- You need to install Arduino IDE and setup ESP8266 Tool Board to Update Code
+- You need import library in EmbeddedSource to Arduino IDE 
+
+
 ## Mobile App Design
 * Smart Connect help controller Smart Connect Controller && read Energy Smart Powwer
 * My Flutter design animation challenge 
