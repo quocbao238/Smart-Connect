@@ -21,7 +21,7 @@ int statusTemp =0 ,statusHumi = 0; /// status = 1 when on , status = 0 when off;
 #define DHTTYPE DHT22 
 
 #define PATH "/Devices"
-#define FIREBASE_HOST "smart-connect-b2f56.firebaseio.com" // Firebase address
+#define FIREBASE_HOST "url firebase" // Firebase address
 #define FIREBASE_AUTH ""   
 #define WIFI_SSID "WiFi"   //    Edit your wifi
 #define WIFI_PASSWORD "Password" // Edit your password
