@@ -31,45 +31,27 @@ class _RoomDataState extends State<RoomData> {
 
   Widget buildPageView() {
     return Positioned(
-      top: ScreenSize.height * 0.3,
+      top: ScreenSize.height * 0.25,
       left: 0,
       right: 0,
       child: Container(
-        height: ScreenSize.height * 0.7,
+        height: ScreenSize.height * 0.75,
         width: ScreenSize.width,
         child: StreamBuilder(
             stream: RealTimeDB.devices.onValue,
             builder: (context, snapshot) {
-              if (snapshot.hasData &&
-                  !snapshot.hasError &&
-                  snapshot.data.snapshot.value != null) {
+              if (snapshot.hasData && !snapshot.hasError && snapshot.data.snapshot.value != null) {
                 Map data = snapshot.data.snapshot.value;
-
-                List<List> itemList = new List();
-                List item = new List();
-                for (int i = 1; i < 5; i++) {
-                  for (int k = 0; k < 1; k++) {
-                    item.add(data['Device$i']['value']);
-                    item.add(data['Device$i']['isFavorite']);
-                    item.add(data['Device$i']['time1']);
-                    item.add(data['Device$i']['time2']);
-                    item.add(data['Device$i']['time3']);
-                    item.add(data['Device$i']['time4']);
-                    item.add(data['Device$i']['count']);
-                  }
-                  itemList.add(item);
-                  item = [];
-                }
-
+                List<List> itemList = mapData(data);
                 return Container(
-                    height: ScreenSize.height * 0.65,
-                    margin: EdgeInsets.symmetric(
-                        horizontal: ScreenSize.marginHorizontal * 1.5),
+                    height: ScreenSize.height * 0.7,
+                    margin: EdgeInsets.symmetric(horizontal: ScreenSize.marginHorizontal * 1.5),
                     child: Column(
                       children: <Widget>[
                         buildRoomButton(),
                         BoxMargin(isVertical: true, multi: 4.0),
                         buildTempAndHumi(data),
+                        BoxMargin(isVertical: true),
                         buildDevices(data, itemList)
                       ],
                     ));
@@ -78,6 +60,25 @@ class _RoomDataState extends State<RoomData> {
             }),
       ),
     );
+  }
+
+  List<List> mapData(Map data) {
+    List<List> itemList = new List();
+    List item = new List();
+    for (int i = 1; i < 5; i++) {
+      for (int k = 0; k < 1; k++) {
+        item.add(data['Device$i']['value']);
+        item.add(data['Device$i']['isFavorite']);
+        item.add(data['Device$i']['time1']);
+        item.add(data['Device$i']['time2']);
+        item.add(data['Device$i']['time3']);
+        item.add(data['Device$i']['time4']);
+        item.add(data['Device$i']['count']);
+      }
+      itemList.add(item);
+      item = [];
+    }
+    return itemList;
   }
 
   Widget buildTempAndHumi(Map<dynamic, dynamic> data) {
@@ -127,102 +128,87 @@ class _RoomDataState extends State<RoomData> {
 
   Widget buildDevices(Map<dynamic, dynamic> data, List<List> item) {
     return Container(
-      height: ScreenSize.height * 0.35,
+      height: ScreenSize.height * 0.50,
+      // color: Colors.green,
       child: GridView.count(
         scrollDirection: Axis.vertical,
         primary: false,
         crossAxisCount: 2,
-        mainAxisSpacing: ScreenSize.marginVertical * 3,
+        mainAxisSpacing: ScreenSize.marginVertical * 2,
         crossAxisSpacing: ScreenSize.marginHorizontal * 1.5,
         // shrinkWrap: true,
-        childAspectRatio: 1.6,
+        childAspectRatio: 1.5,
         children: List.generate(item.length, (index) {
-          return GestureDetector(
-            onTap: () {},
-            child: Container(
-              height: ScreenSize.height * 0.05,
-              padding: EdgeInsets.only(
-                  top: 8.0, bottom: 8.0, right: 12.0, left: 8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: Color.fromRGBO(39, 78, 145, 1),
-                // color: Color.fromRGBO(7, 57, 83, 1),
-              ),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      IconCustom(
-                          color: Color.fromRGBO(0, 233, 193, 1),
-                          size: 30.0 * ScreenSize.szText,
-                          urlIcon: convertIndexIcon(index)),
-                      BoxMargin(isVertical: false),
-                      Text(
-                        "${convertIntdeviceName(index)}",
-                        style: TxtStyle.deviceNameWhite,
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          if (this.mounted) {
-                            setState(() {
-                              setFavorite(
-                                  databaseReference: RealTimeDB.devices,
-                                  key: index == 0
-                                      ? "Device1"
-                                      : index == 1
-                                          ? "Device2"
-                                          : index == 2
-                                              ? "Device3"
-                                              : index == 3
-                                                  ? "Device4"
-                                                  : "Device",
-                                  data: item[index][1] == 0 ? 1 : 0);
-                            });
-                          }
-                        },
-                        child: Container(
-                          width: ScreenSize.width * 0.08,
-                          height: ScreenSize.width * 0.08,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color.fromRGBO(16, 50, 93, 1)),
-                          child: Center(
-                            child: Icon(
-                              item[index][1] == 0
-                                  ? Icons.favorite_border
-                                  : Icons.favorite,
-                              color: item[index][1] == 0
-                                  ? Colors.grey
-                                  : Colors.red,
-                              size: 14 * ScreenSize.szText,
-                            ),
+          return Container(
+            // height: ScreenSize.height * 0.1,
+            padding: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 8.0, left: 8.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Color.fromRGBO(39, 78, 145, 1),
+              // color: Color.fromRGBO(7, 57, 83, 1),
+            ),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    IconCustom(
+                        color: Color.fromRGBO(0, 233, 193, 1),
+                        size: 30.0 * ScreenSize.szText,
+                        urlIcon: convertIndexIcon(index)),
+                    BoxMargin(isVertical: false),
+                    Text(
+                      "${convertIntdeviceName(index)}",
+                      style: TxtStyle.deviceNameWhite,
+                    ),
+                  ],
+                ),
+                Spacer(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        if (this.mounted) {
+                          setState(() {
+                            setFavorite(
+                                databaseReference: RealTimeDB.devices,
+                                key: index == 0
+                                    ? "Device1"
+                                    : index == 1
+                                        ? "Device2"
+                                        : index == 2 ? "Device3" : index == 3 ? "Device4" : "Device",
+                                data: item[index][1] == 0 ? 1 : 0);
+                          });
+                        }
+                      },
+                      child: Container(
+                        width: ScreenSize.width * 0.08,
+                        height: ScreenSize.width * 0.08,
+                        decoration: BoxDecoration(shape: BoxShape.circle, color: Color.fromRGBO(16, 50, 93, 1)),
+                        child: Center(
+                          child: Icon(
+                            item[index][1] == 0 ? Icons.favorite_border : Icons.favorite,
+                            color: item[index][1] == 0 ? Colors.grey : Colors.red,
+                            size: 14 * ScreenSize.szText,
                           ),
                         ),
                       ),
-                      Spacer(),
-                      XlivSwitch(
-                        value: item[index][0] == 0 ? false : true,
-                        onChanged: (value) {
-                          if (this.mounted) {
-                            setState(() {
+                    ),
+                    Spacer(),
+                    XlivSwitch(
+                      value: item[index][0] == 0 ? false : true,
+                      onChanged: (value) {
+                        if (this.mounted) {
+                          setState(
+                            () {
                               setDBData(
                                   databaseReference: RealTimeDB.devices,
                                   key: index == 0
                                       ? "Device1"
                                       : index == 1
                                           ? "Device2"
-                                          : index == 2
-                                              ? "Device3"
-                                              : index == 3
-                                                  ? "Device4"
-                                                  : "Device",
+                                          : index == 2 ? "Device3" : index == 3 ? "Device4" : "Device",
                                   data: item[index][0] == 0 ? 1 : 0);
 
                               setTime(
@@ -232,20 +218,16 @@ class _RoomDataState extends State<RoomData> {
                                       ? "Device1"
                                       : index == 1
                                           ? "Device2"
-                                          : index == 2
-                                              ? "Device3"
-                                              : index == 3
-                                                  ? "Device4"
-                                                  : "Device",
+                                          : index == 2 ? "Device3" : index == 3 ? "Device4" : "Device",
                                   data: (item[index][0] == 0) ? "ON" : "OFF");
-                            });
-                          }
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                )
+              ],
             ),
           );
         }),

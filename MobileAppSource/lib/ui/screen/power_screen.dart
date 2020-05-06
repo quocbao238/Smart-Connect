@@ -35,18 +35,14 @@ class _PowerEnergyState extends State<PowerEnergy> {
   }
 
   Widget buildPageView() {
-    return LayoutBuilder(builder: (context, constraint) {
-      return SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            buidAppBar(),
-            BoxMargin(isVertical: true, multi: 2.0),
-            Expanded(child: buildPage()),
-          ],
-        ),
-      );
-    });
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        buidAppBar(),
+        BoxMargin(isVertical: true, multi: 2.0),
+        Expanded(child: buildPage()),
+      ],
+    );
   }
 
   Widget buildPage() {
@@ -63,8 +59,8 @@ class _PowerEnergyState extends State<PowerEnergy> {
                 buildInstantaneous(),
                 BoxMargin(isVertical: true, multi: 2.0),
                 buildInstanParam(),
-                BoxMargin(isVertical: true, multi: 5.0),
-                buildLastMonth(),
+                // BoxMargin(isVertical: true, multi: 5.0),
+                // buildLastMonth(),
                 // BoxMargin(isVertical: true, multi: 2.0),
                 // buildInstanParam(),
               ],
@@ -120,16 +116,8 @@ class _PowerEnergyState extends State<PowerEnergy> {
           textStyle: const TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 16),
           getTitles: (value) {
             switch (value.toInt()) {
-              case 1:
-                return "10:30";
-              case 3:
-                return "11:30";
               case 5:
-                return "12:30";
-              case 7:
-                return "13:30";
-              case 9:
-                return "14:30";
+                return "5 minutes power";
             }
             return '';
           },

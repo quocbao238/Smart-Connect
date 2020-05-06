@@ -422,7 +422,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           } else
-            return LoadingWidget();
+            return SizedBox();
         });
   }
 

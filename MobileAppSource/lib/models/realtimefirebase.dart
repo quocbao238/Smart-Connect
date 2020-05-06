@@ -45,42 +45,36 @@ Future innitDB() async {
   RealTimeDB.monthPower = RealTimeDB.realtimeDB.reference().child("MonthPower");
 }
 
-Future<void> setDBData(
-    {DatabaseReference databaseReference, String key, var data}) async {
+Future<void> setDBData({DatabaseReference databaseReference, String key, var data}) async {
   await databaseReference.child(key).child("value").set(data);
 }
 
 Future<void> setAllDevice(bool isOn) async {
   int value = isOn ? 0 : 1;
-
   await RealTimeDB.devices.child("Device1").child("value").set(value);
   await RealTimeDB.devices.child("Device2").child("value").set(value);
   await RealTimeDB.devices.child("Device3").child("value").set(value);
   await RealTimeDB.devices.child("Device4").child("value").set(value);
 }
 
-Future<void> setFavorite(
-    {DatabaseReference databaseReference, String key, var data}) async {
+Future<void> setFavorite({DatabaseReference databaseReference, String key, var data}) async {
   await databaseReference.child(key).child("isFavorite").set(data);
 }
 
-Future<void> setTime(
-    {DatabaseReference databaseReference,
-    String key,
-    var data,
-    int count}) async {
+Future<void> setTime({DatabaseReference databaseReference, String key, var data, int count}) async {
   String spcaer = (data.toString() == "ON") ? " " : "";
 
-  await databaseReference.child(key).child("time$count").set("Status $data " +
-      spcaer +
-      DateFormat('HH:mm dd-MM-yyyy').format(DateTime.now()).toString());
+  await databaseReference
+      .child(key)
+      .child("time$count")
+      .set("Status $data " + spcaer + DateFormat('HH:mm dd-MM-yyyy').format(DateTime.now()).toString());
   count++;
   if (count > 4) {
     count = 1;
   }
-  await databaseReference.child(key).child('lasttime').set("Status $data " +
-      spcaer +
-      DateFormat('HH:mm dd-MM-yyyy').format(DateTime.now()).toString());
+  await databaseReference
+      .child(key)
+      .child('lasttime')
+      .set("Status $data " + spcaer + DateFormat('HH:mm dd-MM-yyyy').format(DateTime.now()).toString());
   await databaseReference.child(key).child("count").set(count);
-  
 }
