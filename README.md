@@ -27,7 +27,7 @@
 
 ## Embedded
 - Source code in EmbeddedSource
-- I use ESP8266-V12 and ESP8266 V1 with Pzem004T
+- I use ESP8266-V12 and ESP8266-V7 with Pzem004T
 - You need to install Arduino IDE and setup ESP8266 Tool Board to Update Code
 - You need import library in EmbeddedSource to Arduino IDE 
 
