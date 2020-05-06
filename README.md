@@ -23,3 +23,59 @@
 <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/power_pcblayout1.png" width="1000"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/power_pcblayout2.png" width="1000"/>
 
 ## Mobile App Design
+* Smart Connect help controller Smart Connect Controller && read Energy Smart Powwer
+* My Flutter design animation challenge 
+#### Feature
+* This source code support to do project in school and learn Flutter
+* I have developed this app all by myself and I would be happy to share the APK of the app for testing purposes.
+#### Dowload
+[![Try in PWD](https://i.pinimg.com/originals/01/d9/53/01d95329a419f52751f875daf9d0f1aa.png)](https://drive.google.com/open?id=1BWEaOilSd8OrOOeZM_4cBjCsVK4jK_zs)
+#### Screenshot
+ - Intro && Login Screen
+ 
+<img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot1.png" width="500"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot2.png" width="500"/>
+
+ - Home Screen
+ 
+ <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot3.png" width="500"/>
+ 
+ - Favorite Devices Screen
+ 
+<img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot4.png" width="500"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot5.png" width="500"/>
+
+ - Rooms Screen
+ 
+<img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot6.png" width="500"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot7.png" width="500"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot8.png" width="500"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot9.png" width="500"/>
+
+- Power Screen
+ 
+<img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot10.png" width="500"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot11.png" width="500"/> <img 
+
+
+#### Prequisites
+
+- simple_animations
+- supercharged
+- toast
+- fl_chart
+- xlive_switch
+- firebase_core
+- firebase_database
+- intl
+- loading_animations
+- flutter_launcher_icons
+
+#### Android Version
+5.0 or up
+
+#### Contact
+
+If you have any copyright issues please contact us via email: baobondev@gmail.com
+
+### Documenttation style & source
+
+https://dribbble.com/shots/7201905-Smart-Home-V2-0
+https://dribbble.com/shots/7188415-Smart-Home-App-Login-Splash-Screen
+https://dribbble.com/shots/7185723-Smart-Home-App
+https://dribbble.com/shots/7166274-Smart-Home
+
