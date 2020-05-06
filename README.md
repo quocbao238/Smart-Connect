@@ -61,7 +61,8 @@
  
 <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot10.png" width="400"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot11.png" width="400"/>
 
-* Video Demo : https://youtu.be/gOho6wkSMA8
+* Mobile App Video  : https://youtu.be/gOho6wkSMA8
+* Smart Connect Project Video : https://youtu.be/59hG29KTUPE
 
 #### Prequisites
 
