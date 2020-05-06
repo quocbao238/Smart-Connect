@@ -7,21 +7,21 @@
 
 ### Smart Controller Board 
 
-- Schematic
+* Schematic
 
 <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/controller_schematic.PNG" width="1000"/>
 
-- Pcb 3D
+* Pcb 3D
 
 <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/controller_pcblayout1.png" width="1000"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/controller_pcblayout2.png" width="1000"/>
 
 ### Smart Energy Board 
 
-- Schematic
+* Schematic
 
 <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/power_schematic.PNG" width="1000"/> 
 
-- Pcb 3D
+* Pcb 3D
 
 <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/power_pcblayout1.png" width="1000"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/power_pcblayout2.png" width="1000"/>
 
@@ -34,26 +34,27 @@
 #### Dowload
 [![Try in PWD](https://i.pinimg.com/originals/01/d9/53/01d95329a419f52751f875daf9d0f1aa.png)](https://github.com/quocbao238/Smart-Connect/raw/master/InstallAPK/Smart%20Connect.apk)
 #### Screenshot
- - Intro && Login Screen
+ * Intro && Login Screen
  
 <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot1.png" width="400"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot2.png" width="400"/>
 
- - Home Screen
+ * Home Screen
  
  <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot3.png" width="400"/>
  
- - Favorite Devices Screen
+ * Favorite Devices Screen
  
 <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot4.png" width="400"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot5.png" width="400"/>
 
- - Rooms Screen
+ * Rooms Screen
  
 <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot6.png" width="400"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot7.png" width="400"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot8.png" width="400"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot9.png" width="400"/>
 
-- Power Screen
+* Power Screen
  
 <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot10.png" width="400"/> <img src="https://raw.githubusercontent.com/quocbao238/Smart-Connect/master/imagepath/screenshot11.png" width="400"/>
 
+* Video Demo : https://youtu.be/gOho6wkSMA8
 
 #### Prequisites
 
