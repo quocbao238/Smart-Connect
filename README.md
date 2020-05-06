@@ -1,5 +1,8 @@
 # Smart-Connect
 
+- My IoT Project Altium + ESP8266 + Pzem004T + Flutter APP
+- I have developed all by myself and I would be happy to share my design,source and APK for testing purposes.
+- If you have any copyright issues please contact us via email: baobondev@gmail.com
 ## Alitum Desgin 
 
 ### Smart Controller Board 
@@ -68,9 +71,6 @@
 #### Android Version
 5.0 or up
 
-#### Contact
-
-If you have any copyright issues please contact us via email: baobondev@gmail.com
 
 ### Documenttation style & source
 
@@ -78,4 +78,8 @@ https://dribbble.com/shots/7201905-Smart-Home-V2-0
 https://dribbble.com/shots/7188415-Smart-Home-App-Login-Splash-Screen
 https://dribbble.com/shots/7185723-Smart-Home-App
 https://dribbble.com/shots/7166274-Smart-Home
+
+### Contact
+If you have any copyright issues please contact us via email: baobondev@gmail.com
+
 
