@@ -24,47 +24,47 @@ class _PowerEnergyState extends State<PowerEnergy> {
     return false;
   }
 
+  List<double> chartData = new List();
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: Scaffold(
-          key: powerGlobalKey,
-          backgroundColor: Color.fromRGBO(6, 41, 74, 1),
-          body: buildPageView()),
+      child: Scaffold(key: powerGlobalKey, backgroundColor: Color.fromRGBO(6, 41, 74, 1), body: buildPageView()),
     );
   }
 
   Widget buildPageView() {
-    return SafeArea(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          buidAppBar(),
-          BoxMargin(isVertical: true, multi: 2.0),
-          Expanded(child: Container(child: buildPage())),
-        ],
-      ),
-    );
+    return LayoutBuilder(builder: (context, constraint) {
+      return SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            buidAppBar(),
+            BoxMargin(isVertical: true, multi: 2.0),
+            Expanded(child: buildPage()),
+          ],
+        ),
+      );
+    });
   }
 
   Widget buildPage() {
     return StreamBuilder(
         stream: RealTimeDB.power.onValue,
         builder: (context, snapshot) {
-          if (snapshot.hasData &&
-              !snapshot.hasError &&
-              snapshot.data.snapshot.value != null) {
+          if (snapshot.hasData && !snapshot.hasError && snapshot.data.snapshot.value != null) {
             Map data = snapshot.data.snapshot.value;
+            adddatatoList(data);
             return Column(
               children: <Widget>[
-                buildChart(convertListChart(data)),
+                buildChart(),
                 BoxMargin(isVertical: true, multi: 3.0),
                 buildInstantaneous(),
                 BoxMargin(isVertical: true, multi: 2.0),
                 buildInstanParam(),
                 BoxMargin(isVertical: true, multi: 5.0),
-                // buildLastMonth(),
+                buildLastMonth(),
                 // BoxMargin(isVertical: true, multi: 2.0),
                 // buildInstanParam(),
               ],
@@ -74,7 +74,7 @@ class _PowerEnergyState extends State<PowerEnergy> {
         });
   }
 
-  Widget buildChart(List<double> convertListChart) {
+  Widget buildChart() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: ScreenSize.marginHorizontal),
       height: ScreenSize.height * 0.4,
@@ -85,14 +85,14 @@ class _PowerEnergyState extends State<PowerEnergy> {
         color: Color.fromRGBO(5, 86, 128, 1),
       ),
       child: LineChart(
-        powerData(convertListChart),
+        powerData(),
       ),
     );
     //   },
     // );
   }
 
-  LineChartData powerData(List<double> convertListChart) {
+  LineChartData powerData() {
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -117,8 +117,7 @@ class _PowerEnergyState extends State<PowerEnergy> {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          textStyle: const TextStyle(
-              color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 16),
+          textStyle: const TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 16),
           getTitles: (value) {
             switch (value.toInt()) {
               case 1:
@@ -171,19 +170,98 @@ class _PowerEnergyState extends State<PowerEnergy> {
       maxY: 2500,
       lineBarsData: [
         LineChartBarData(
-          spots: [
-            FlSpot(0, convertListChart[0]),
-            FlSpot(1, convertListChart[1]),
-            FlSpot(2, convertListChart[2]),
-            FlSpot(3, convertListChart[3]),
-            FlSpot(4, convertListChart[4]),
-            FlSpot(5, convertListChart[5]),
-            FlSpot(6, convertListChart[6]),
-            FlSpot(7, convertListChart[7]),
-            FlSpot(8, convertListChart[8]),
-            FlSpot(9, convertListChart[9]),
-            FlSpot(10, convertListChart[9]),
-          ],
+          spots: chartData.length == 1
+              ? [FlSpot(0, chartData[0])]
+              : chartData.length == 2
+                  ? [FlSpot(0, chartData[0]), FlSpot(1, chartData[1])]
+                  : chartData.length == 3
+                      ? [FlSpot(0, chartData[0]), FlSpot(1, chartData[1]), FlSpot(2, chartData[2])]
+                      : chartData.length == 4
+                          ? [
+                              FlSpot(0, chartData[0]),
+                              FlSpot(1, chartData[1]),
+                              FlSpot(2, chartData[2]),
+                              FlSpot(3, chartData[3])
+                            ]
+                          : chartData.length == 5
+                              ? [
+                                  FlSpot(0, chartData[0]),
+                                  FlSpot(1, chartData[1]),
+                                  FlSpot(2, chartData[2]),
+                                  FlSpot(3, chartData[3]),
+                                  FlSpot(4, chartData[4])
+                                ]
+                              : chartData.length == 6
+                                  ? [
+                                      FlSpot(0, chartData[0]),
+                                      FlSpot(1, chartData[1]),
+                                      FlSpot(2, chartData[2]),
+                                      FlSpot(3, chartData[3]),
+                                      FlSpot(4, chartData[4]),
+                                      FlSpot(5, chartData[5]),
+                                    ]
+                                  : chartData.length == 7
+                                      ? [
+                                          FlSpot(0, chartData[0]),
+                                          FlSpot(1, chartData[1]),
+                                          FlSpot(2, chartData[2]),
+                                          FlSpot(3, chartData[3]),
+                                          FlSpot(4, chartData[4]),
+                                          FlSpot(5, chartData[5]),
+                                          FlSpot(6, chartData[6]),
+                                        ]
+                                      : chartData.length == 8
+                                          ? [
+                                              FlSpot(0, chartData[0]),
+                                              FlSpot(1, chartData[1]),
+                                              FlSpot(2, chartData[2]),
+                                              FlSpot(3, chartData[3]),
+                                              FlSpot(4, chartData[4]),
+                                              FlSpot(5, chartData[5]),
+                                              FlSpot(6, chartData[6]),
+                                              FlSpot(7, chartData[7]),
+                                            ]
+                                          : chartData.length == 9
+                                              ? [
+                                                  FlSpot(0, chartData[0]),
+                                                  FlSpot(1, chartData[1]),
+                                                  FlSpot(2, chartData[2]),
+                                                  FlSpot(3, chartData[3]),
+                                                  FlSpot(4, chartData[4]),
+                                                  FlSpot(5, chartData[5]),
+                                                  FlSpot(6, chartData[6]),
+                                                  FlSpot(7, chartData[7]),
+                                                  FlSpot(8, chartData[8]),
+                                                ]
+                                              : chartData.length == 10
+                                                  ? [
+                                                      FlSpot(0, chartData[0]),
+                                                      FlSpot(1, chartData[1]),
+                                                      FlSpot(2, chartData[2]),
+                                                      FlSpot(3, chartData[3]),
+                                                      FlSpot(4, chartData[4]),
+                                                      FlSpot(5, chartData[5]),
+                                                      FlSpot(6, chartData[6]),
+                                                      FlSpot(7, chartData[7]),
+                                                      FlSpot(8, chartData[8]),
+                                                      FlSpot(9, chartData[9]),
+                                                    ]
+                                                  : chartData.length == 10
+                                                      ? [
+                                                          FlSpot(0, chartData[0]),
+                                                          FlSpot(1, chartData[1]),
+                                                          FlSpot(2, chartData[2]),
+                                                          FlSpot(3, chartData[3]),
+                                                          FlSpot(4, chartData[4]),
+                                                          FlSpot(5, chartData[5]),
+                                                          FlSpot(6, chartData[6]),
+                                                          FlSpot(7, chartData[7]),
+                                                          FlSpot(8, chartData[8]),
+                                                          FlSpot(9, chartData[9]),
+                                                          FlSpot(10, chartData[10]),
+                                                        ]
+                                                      : [],
+
           isCurved: true,
           colors: gradientColors,
           barWidth: 5,
@@ -193,8 +271,7 @@ class _PowerEnergyState extends State<PowerEnergy> {
           ),
           belowBarData: BarAreaData(
             show: true,
-            colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),
       ],
@@ -282,32 +359,27 @@ class _PowerEnergyState extends State<PowerEnergy> {
 
   Widget buildContainerParameter() {
     return Container(
-      margin: EdgeInsets.only(
-          bottom: ScreenSize.marginVertical, left: ScreenSize.marginHorizontal),
+      margin: EdgeInsets.only(bottom: ScreenSize.marginVertical, left: ScreenSize.marginHorizontal),
       height: ScreenSize.height * 0.3,
       width: ScreenSize.width,
       child: FirebaseAnimatedList(
           scrollDirection: Axis.horizontal,
           query: RealTimeDB.power,
           sort: (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key),
-          itemBuilder: (BuildContext context, DataSnapshot snapshot,
-              Animation<double> animation, int index) {
+          itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index) {
             return buildParamContent(animation, snapshot);
           }),
     );
   }
 
-  SizeTransition buildParamContent(
-      Animation<double> animation, DataSnapshot snapshot) {
+  SizeTransition buildParamContent(Animation<double> animation, DataSnapshot snapshot) {
     return SizeTransition(
         sizeFactor: animation,
         child: Container(
           margin: EdgeInsets.only(right: ScreenSize.marginHorizontal * 2),
           width: ScreenSize.width * 0.4,
           height: ScreenSize.height * 0.3,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Color.fromRGBO(14, 71, 100, 1)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Color.fromRGBO(14, 71, 100, 1)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -321,9 +393,7 @@ class _PowerEnergyState extends State<PowerEnergy> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                        snapshot.value['value'].toString() +
-                            " ${convertUnitParam(snapshot.key)}",
+                    Text(snapshot.value['value'].toString() + " ${convertUnitParam(snapshot.key)}",
                         style: TxtStyle.deviceNameWhite),
                     BoxMargin(isVertical: false),
                     Text(snapshot.key, style: TxtStyle.deviceContent),
@@ -334,9 +404,7 @@ class _PowerEnergyState extends State<PowerEnergy> {
               Container(
                 height: ScreenSize.height * 0.04,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(16)),
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
                     color: Color.fromRGBO(5, 86, 128, 1)),
                 child: Center(
                     child: Text(
@@ -376,20 +444,31 @@ class _PowerEnergyState extends State<PowerEnergy> {
       width: 6,
       height: ScreenSize.height * 0.15 * param,
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [
-          Color.fromRGBO(0, 233, 193, 1),
-          Color.fromRGBO(15, 175, 176, 1)
-        ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+        gradient: LinearGradient(
+            colors: [Color.fromRGBO(0, 233, 193, 1), Color.fromRGBO(15, 175, 176, 1)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter),
         borderRadius: BorderRadius.circular(16.0),
       ),
     );
   }
 
-  List<double> convertListChart(Map<dynamic, dynamic> data) {
-    List<double> chartData = List();
-    for (int i = 1; i <= 10; i++) {
-      chartData.add(data['Power']['value$i']['value'].toDouble());
+  // List<double> convertListChart(Map<dynamic, dynamic> data) {
+  //   List<double> chartData = List();
+  //   for (int i = 1; i <= 9; i++) {
+  //     chartData.add(data['Power']['value$i']['value'].toDouble());
+  //   }
+  //   return chartData;
+  // }
+
+  void adddatatoList(Map<dynamic, dynamic> data) {
+    if (chartData.length <= 9) {
+      chartData.add(data['Power']['value'].toDouble());
+      return;
+    } else {
+      chartData.removeAt(0);
+      chartData.add(data['Power']['value'].toDouble());
+      return;
     }
-    return chartData;
   }
 }
