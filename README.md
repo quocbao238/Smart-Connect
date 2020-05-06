@@ -1,6 +1,6 @@
 # Smart-Connect
 
-- My IoT Project Altium + ESP8266 + Pzem004T + Flutter APP
+- My IoT Project Altium + ESP8266 + Pzem004T + Flutter APP with Firebase Backend
 - I have developed all by myself and I would be happy to share my design,source and APK for testing purposes.
 - If you have any copyright issues please contact us via email: baobondev@gmail.com
 ## Alitum Desgin 
