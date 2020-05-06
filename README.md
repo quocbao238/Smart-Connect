@@ -32,7 +32,7 @@
 * This source code support to do project in school and learn Flutter
 * I have developed this app all by myself and I would be happy to share the APK of the app for testing purposes.
 #### Dowload
-[![Try in PWD](https://i.pinimg.com/originals/01/d9/53/01d95329a419f52751f875daf9d0f1aa.png)](https://drive.google.com/open?id=1BWEaOilSd8OrOOeZM_4cBjCsVK4jK_zs)
+[![Try in PWD](https://i.pinimg.com/originals/01/d9/53/01d95329a419f52751f875daf9d0f1aa.png)](https://github.com/quocbao238/Smart-Connect/raw/master/InstallAPK/Smart%20Connect.apk)
 #### Screenshot
  - Intro && Login Screen
  
