@@ -1,5 +1,11 @@
 # Smart-Connect
 
+SmartConnect is an innovative solution that combines Altium, ESP8266, Pzem004T, Flutter app, and Firebase backend to create a smart home automation system. The system is designed to monitor and control electrical devices in the home, providing users with a convenient and efficient way to manage their power usage.
+
+The system consists of the ESP8266 microcontroller, Pzem004T power monitoring module, and Altium PCB design. The ESP8266 is used to connect the devices to the internet, while the Pzem004T monitors the power consumption of each device. The Altium PCB design ensures the system is reliable and secure.
+
+The Flutter app serves as the user interface, allowing users to view and control their devices remotely. The app is integrated with Firebase backend, providing secure cloud storage and real-time data synchronization.
+
 - My IoT Project Altium + ESP8266 + Pzem004T + Flutter APP with Firebase Backend
 - I have developed all by myself and I would be happy to share my design,source and APK for testing purposes.
 - If you have any copyright issues please contact us via email: baobondev@gmail.com
